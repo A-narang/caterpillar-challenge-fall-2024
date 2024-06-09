@@ -180,7 +180,7 @@ async function submit() {
         await getData();
         const answer = await getStats(sessions, rounds, participantInfo);
 
-        //console.log(answer);
+        console.log(answer);
 
         // POST request
         const response = await fetch(url, {
