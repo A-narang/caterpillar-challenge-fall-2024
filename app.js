@@ -45,34 +45,39 @@
 // GLOBAL CONSTANTS
 const url = 'https://challenge.sandboxnu.com/s/PMRGIYLUMERDU6ZCMVWWC2LMEI5CE3TBOJQW4ZZOMFXEA3TPOJ2GQZLBON2GK4TOFZSWI5JCFQRGI5LFEI5DCNZRG44TSMJZHE4SYITDNBQWY3DFNZTWKIR2EJDGY33XEJ6SYITIMFZWQIR2EJQTMVDCORZTI4CWNFXHOZLOJI2TERDHHURH2==='
 let sessions;
-let rounds 
+let rounds
 let participantInfo
 
 
+// Gets data from url
 async function getData() {
     try {
-      const response = await fetch(url);
-      if(response.ok){
-        const data = await response.json();
-        sessions = data.sessions;
-        rounds = data.rounds;
-        participantInfo = data.participantInfo;
-      }
+        const response = await fetch(url);
+        if (response.ok) {
+            const data = await response.json();
+            // seperates data
+            sessions = data.sessions;
+            rounds = data.rounds;
+            participantInfo = data.participantInfo;
+        }
     } catch (error) {
-      console.error('Error:', error);
+        console.error('Error:', error);
     }
-  }
+}
 
-  async function getSessionsByParticpantID(id) {
+// filters sessions based on given participant id
+async function getSessionsByParticpantID(id) {
     result = sessions.filter(({ participantId }) => participantId == id);
     return result;
 }
 
+// finds round with given id
 async function getRoundById(id) {
     result = rounds.find(({ roundId }) => roundId == id);
     return result;
 }
 
+// gets all rounds in given sessions + finds the average score
 async function getAverageRoundScore(sessions) {
     let roundsInAllSessions = [];
     // get all rounds in sessions
@@ -89,7 +94,8 @@ async function getAverageRoundScore(sessions) {
     return Math.round(score / roundsInAllSessions.length * 100) / 100;
 }
 
-async function getAverageSessionDuration(sessions) {
+// finds average duration of given sessions
+function getAverageSessionDuration(sessions) {
     let duration = 0;
     // add up add session durations
     for (const s of sessions) {
@@ -99,28 +105,31 @@ async function getAverageSessionDuration(sessions) {
     return Math.round(duration / sessions.length * 100) / 100;
 }
 
+// gets statistics by language from the given session
 async function getLanguageStats(sessions) {
+    // maps language to roundIds
     const lMap = new Map();
     for (const s of sessions) {
         const language = s.language;
         if (!lMap.has(language)) {
             lMap.set(language, []);
         }
-
         lMap.set(language, lMap.get(language).concat(s.rounds));
     }
 
     let languages = [];
 
+    // loop through languages
     for (let lang of lMap.keys()) {
         let roundIds = lMap.get(lang);
         let scoreTotal = 0;
         let durationTotal = 0;
 
-        // Use `Promise.all` to fetch all round details concurrently
+        // get rounds from roundIds
         const roundPromises = roundIds.map(roundId => getRoundById(roundId));
         const rounds = await Promise.all(roundPromises);
 
+        // loop though rounds
         for (const round of rounds) {
             scoreTotal += round.score;
             durationTotal += (round.endTime - round.startTime);
@@ -136,7 +145,9 @@ async function getLanguageStats(sessions) {
         languages.push(langStats);
     }
 
+    // sort by totalScore
     languages.sort((a, b) => b.totalScore - a.totalScore);
+    // delete tota score property
     languages.forEach(lang => delete lang.totalScore);
     return JSON.stringify(languages);
 }
@@ -156,8 +167,8 @@ async function getStats(s, r, pi) {
             "averageSessionDuration": await getAverageSessionDuration(sesh) || "N/A"
         }
         result.push(obj);
-        result.sort
     }
+    // sort by name
     result.sort((a, b) => a.name.localeCompare(b.name));
     return result;
 }
@@ -167,31 +178,25 @@ async function getStats(s, r, pi) {
 async function submit() {
     try {
         await getData();
-        const stats = await getStats(sessions, rounds, participantInfo);
+        const answer = await getStats(sessions, rounds, participantInfo);
 
-        //console.log('Data:', stats);
+        //console.log(answer);
 
-        // Send the data in the POST request
+        // POST request
         const response = await fetch(url, {
             method: "POST",
-            body: JSON.stringify(stats), // Properly stringify resolved data
+            body: JSON.stringify(answer),
             headers: {
                 "Content-Type": "application/json; charset=UTF-8"
             }
         });
 
-        // Check for response status
-        if (!response.ok) {
-            const errorText = await response.text(); // Get more error details
-            throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
-        }
-
         // Parse the JSON response
-        const r = await response;
-        console.log('Response:', r);
+        const result = await response;
+        console.log('Response: ', result);
 
     } catch (error) {
-        console.error('Error during fetch:', error);
+        console.error('Error: ', error);
     }
 }
 
