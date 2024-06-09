@@ -1,45 +1,17 @@
-// DATA DEFINITIONS
 /**
- * a session has a:
- * - participantId
- * - sessionId
- * - language
- * - rounds
- * - startTime
- * - endTime
- */
-
-/**
- * a round has a
- * - roundId
- * - sessionId
- * - score
- * - startTime
- * - endTime
- */
-
-/**
- * a participantInfo has a
- * - participantId
- * - name
- * - age
- * - sessions
- */
-
-/**
- * stats has a 
- * - participantId
- * - name
- * - languageStats
- * - average round score
- * - average session duration
- */
-
-/**
- * language stats has a
- * - langauge
- * - average score
- * - average round duration 
+ * {
+ *  "data": {
+ *      "participantId": "number",
+ *      "name": "string",
+ *      "languages": {
+ *          "language": "string",
+ *          "averageScore": "number",
+ *          "averageRoundDuration": "number"
+ *      },
+ *      "averageRoundScore": "number",
+ *      "averageSessionDuration": "number"
+ *      }
+ * }
  */
 
 // GLOBAL CONSTANTS
