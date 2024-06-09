@@ -17,9 +17,9 @@ The most difficult part was getting the average scores and round durations based
 
 ## The primary technical problems you ran into while implementing this challenge
 
-The first issue I ran into was not using an async function to make my GET request. This caused to program to not wait until the data had been retrieved. 
+The first issue I ran into was not using an async function to make my GET request. This caused to program to not wait until the data had been retrieved.
 
-The second main issue was how to separate each participant's sessions by language while also keeping track of the corresponding array of round IDs. At first, I tried to use arrays but struggled to keep track of the information and couldn't come up with a simple way to combine data from multiple sessions that were in the same language. To fix this I ended up using a hashmap. This simplified the problem as I was able to make the language a key and sort the array of corresponding round ids as the value. Additionally, this simplified the issue of having multiple sessions in the same name as all I had to do was concat the round IDs from both sessions use that to replace the value in the hashmap.
+The second main issue was how to separate each participant's sessions by language while also keeping track of the corresponding array of round IDs. At first, I tried to use arrays but struggled to keep track of the information and couldn't come up with a simple way to combine data from multiple sessions that were in the same language. To fix this I ended up using a hashmap. This simplified the problem as I was able to make the language a key and sort the array of corresponding round IDs as the value. Additionally, this simplified the issue of having multiple sessions in the same name as all I had to do was concat the round IDs from both sessions and use that to replace the value in the hashmap.
 
 ## Approximate time it took you to complete this project
 
