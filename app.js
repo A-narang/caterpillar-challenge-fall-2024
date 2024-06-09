@@ -66,19 +66,19 @@ async function getData() {
 }
 
 // filters sessions based on given participant id
-async function getSessionsByParticpantID(id) {
+function getSessionsByParticpantID(id) {
     result = sessions.filter(({ participantId }) => participantId == id);
     return result;
 }
 
 // finds round with given id
-async function getRoundById(id) {
+function getRoundById(id) {
     result = rounds.find(({ roundId }) => roundId == id);
     return result;
 }
 
 // gets all rounds in given sessions + finds the average score
-async function getAverageRoundScore(sessions) {
+function getAverageRoundScore(sessions) {
     let roundsInAllSessions = [];
     // get all rounds in sessions
     for (const s of sessions) {
@@ -87,7 +87,7 @@ async function getAverageRoundScore(sessions) {
     // add up all scores in rounds
     let score = 0;
     for (const r of roundsInAllSessions) {
-        let round = await getRoundById(r);
+        let round = getRoundById(r);
         score += round.score;
     }
     // calc average
@@ -106,7 +106,7 @@ function getAverageSessionDuration(sessions) {
 }
 
 // gets statistics by language from the given session
-async function getLanguageStats(sessions) {
+function getLanguageStats(sessions) {
     // maps language to roundIds
     const lMap = new Map();
     for (const s of sessions) {
@@ -127,7 +127,7 @@ async function getLanguageStats(sessions) {
 
         // get rounds from roundIds
         const roundPromises = roundIds.map(roundId => getRoundById(roundId));
-        const rounds = await Promise.all(roundPromises);
+        const rounds = roundPromises;
 
         // loop though rounds
         for (const round of rounds) {
@@ -152,19 +152,19 @@ async function getLanguageStats(sessions) {
     return JSON.stringify(languages);
 }
 
-async function getStats(s, r, pi) {
+function getStats(s, r, pi) {
     let result = [];
     // loop through participants
     for (const key of Object.keys(pi)) {
         // get participant's sessions based on id
-        const sesh = await getSessionsByParticpantID(pi[key].participantId);
+        const sesh = getSessionsByParticpantID(pi[key].participantId);
 
         const obj = {
             "id": pi[key].participantId,
             "name": pi[key].name,
-            "languages": JSON.parse(await getLanguageStats(sesh)),
-            "averageRoundScore": await getAverageRoundScore(sesh) || "N/A",
-            "averageSessionDuration": await getAverageSessionDuration(sesh) || "N/A"
+            "languages": JSON.parse(getLanguageStats(sesh)),
+            "averageRoundScore": getAverageRoundScore(sesh) || "N/A",
+            "averageSessionDuration": getAverageSessionDuration(sesh) || "N/A"
         }
         result.push(obj);
     }
@@ -178,9 +178,9 @@ async function getStats(s, r, pi) {
 async function submit() {
     try {
         await getData();
-        const answer = await getStats(sessions, rounds, participantInfo);
+        const answer = getStats(sessions, rounds, participantInfo);
 
-        console.log(answer);
+        //console.log(answer);
 
         // POST request
         const response = await fetch(url, {
@@ -192,8 +192,8 @@ async function submit() {
         });
 
         // Parse the JSON response
-        const result = await response;
-        console.log('Response: ', result);
+        const r = await response;
+        console.log('Response: ', r);
 
     } catch (error) {
         console.error('Error: ', error);
