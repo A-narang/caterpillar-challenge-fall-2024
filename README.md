@@ -2,7 +2,9 @@
 sandbox challenge 2024
 
 ## How to run your solution
+
 node.js needs to be installed
+
 Run node app.js in the terminal
 
 ## Your thought process/how you designed your solution
@@ -20,4 +22,5 @@ The first issue I ran into was not using an async function to make my GET reques
 The second main issue was how to separate each participant's sessions by language while also keeping track of the corresponding array of round IDs. At first, I tried to use arrays but struggled to keep track of the information and couldn't come up with a simple way to combine data from multiple sessions that were in the same language. To fix this I ended up using a hashmap. This simplified the problem as I was able to make the language a key and sort the array of corresponding round ids as the value. Additionally, this simplified the issue of having multiple sessions in the same name as all I had to do was concat the round IDs from both sessions use that to replace the value in the hashmap.
 
 ## Approximate time it took you to complete this project
+
 5 - 6 hours
