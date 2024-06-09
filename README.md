@@ -2,6 +2,7 @@
 sandbox challenge 2024
 
 ## How to run your solution
+node.js needs to be installed
 Run node app.js in the terminal
 
 ## Your thought process/how you designed your solution
