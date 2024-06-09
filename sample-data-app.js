@@ -1,6 +1,6 @@
 // GLOBAL CONSTANTS
 const url = 'https://challenge.sandboxnu.com/s/PMRGIYLUMERDU6ZCMVWWC2LMEI5CE3TBOJQW4ZZOMFXEA3TPOJ2GQZLBON2GK4TOFZSWI5JCFQRGI5LFEI5DCNZRG44TSMJZHE4SYITDNBQWY3DFNZTWKIR2EJDGY33XEJ6SYITIMFZWQIR2EJQTMVDCORZTI4CWNFXHOZLOJI2TERDHHURH2==='
-const sampleData = require('./sampleData.json');
+const sampleData = require('./sample-data.json');
 let sessions = sampleData.sessions;
 let rounds = sampleData.rounds;
 let participantInfo = sampleData.participantInfo;
