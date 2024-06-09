@@ -9,7 +9,7 @@ Run node app.js in the terminal
 
 ## Your thought process/how you designed your solution
 
-I started off using the sample data given and writing a function to get every participant's name and ID. From there I attempted to replace the sample data with a GET request. At first, I didn't use async/await to do this and I found that when I tried to use the data it would sometimes return as undefined. After looking into this error I discovered async functions can be used to ask the program to wait until the data has been returned from the API.
+I started by using the sample data and writing a function to get every participant's name and ID. Then, I attempted to replace the sample data with a GET request. At first, I didn't use an async function to do this. As a result, when I tried to use the data it would sometimes return as undefined. After looking into this error I discovered async functions can be used to ask the program to wait until the data has been returned from the API.
 
 Then, to get the language information, rounds, and session duration, I had to find which sessions belonged to which participant. I wrote a method to filter sessions based on the participant's ID. I used this to get the average session duration. To get the average round score I had to write another method that found rounds based on round IDs. From there I was able to get the average round scores.
 
